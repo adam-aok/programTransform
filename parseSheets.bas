@@ -25,7 +25,11 @@ Sub LoopThroughFiles()
         StrFile = Dir
     Loop
 End Sub
+
 Sub parseFile(fName)
+
+
+'Sub parseFile()
 
 Dim wbFile As Workbook
 Dim shX As Worksheet
@@ -48,13 +52,16 @@ Dim destCols() As Variant
 Dim wsName As String
 Dim sourceRange, fillRange As Range
 Dim newOrExist As String
+Dim deptName As String
 
 soaCols = Array("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)")
 destCols = Array("SoA Ref No.", "(B)", "(C)", "Quantity of Rooms", "NOFA (m2)", "(F)", "(G)", "Remarks")
 
 dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
 
+'fName = "017-20200630_PnC_LKB SoA Section 17 Dangerous Good Stores.xlsx"
 
+'fName = "009-20200630_PnC_LKB SoA Section 9 Information Counter.xlsx"
 
 'need to pass entire filepath?
 Workbooks.Open Filename:=dirPath + fName
@@ -66,6 +73,8 @@ Set wbFile = Workbooks(fName)
         
         'find the start of each column, and descend down the column to find the bottom
         With shX.Cells
+        
+            'shX.Cells.UnMerge
             Set startHeader = .Find("(A)", LookIn:=xlValues)
             
             'if the startPoint is found, then descend down the column to find the bottom-left value
@@ -87,8 +96,9 @@ Set wbFile = Workbooks(fName)
             If Not startBottom Is Nothing Then
                 'MsgBox rngFound.Address
                 'something is found
-                
+                '.Range
                 Set foundRange = .Range(startHeader.Offset(4, 0), startBottom.Offset(-5, 11))
+                'foundRange.UnMerge
                 'foundRange.Columns("C:E").Delete
                 'foundRange.Columns(4).Delete
                 'foundRange.Columns(1).Insert , xlShiftToRight
@@ -101,6 +111,13 @@ Set wbFile = Workbooks(fName)
             Else
                 'nothing is found
             End If
+            
+            If Not .Find("Hospital Authority", LookIn:=xlValues) Is Nothing Then
+                deptName = .Find("Hospital Authority", LookIn:=xlValues).Offset(1, 0).Value
+            End If
+            
+                        
+            'determine new or existing
             If Not .Find("(New Block)", LookIn:=xlValues) Is Nothing Then
                 newOrExist = "New"
             Else
@@ -114,7 +131,7 @@ Set wbFile = Workbooks(fName)
   
         
         'find the start of each column, and descend down the column to find the bottom
-        With Workbooks("2021-02-17_LKB Proposed Excel Format Headings.xlsm").Worksheets("Sheet1").Cells
+        With Workbooks("2021-02-19_LKB Proposed Excel Format Headings.xlsm").Worksheets("Sheet1").Cells
             If Not foundRange Is Nothing Then
                 If shX.Name <> "Guidelines" Then
                 Set destStart = .Range("F1048576").End(xlUp).Offset(1, 0)
@@ -133,10 +150,12 @@ Set wbFile = Workbooks(fName)
                   '      Set destStart.Offset(0, -1) = Cellular
                  '   End If
                 'Next r
+                Workbooks("2021-02-19_LKB Proposed Excel Format Headings.xlsm").Worksheets("Sheet1").Cells.UnMerge
                 foundRange.Columns("A:B").Copy Destination:=destStart
                 foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 2)
                 .Range(destStart.Offset(0, -5), destStart.Offset(foundRange.Rows.Count, -5)).Value = fName
                 .Range(destStart.Offset(0, -4), destStart.Offset(foundRange.Rows.Count, -4)).Value = shX.Name
+                .Range(destStart.Offset(0, -3), destStart.Offset(foundRange.Rows.Count, -3)).Value = deptName
                 .Range(destStart.Offset(0, 9), destStart.Offset(foundRange.Rows.Count, 9)).Value = newOrExist
                 
                 'If
@@ -162,13 +181,12 @@ Workbooks(fName).Close SaveChanges:=False
 End Sub
 
 
-Sub scrapeSoaMain()
+'Sub scrapeSoaMain()
 
-Dim sourceDirectory As String
+'Dim sourceDirectory As String
 'set sourceDirectory to be the name of the place to search for files
 
-parseFile (fName)
-With Worksheets(soaFile).Cells
-End With
-End Sub
-
+'parseFile (fName)
+'With Worksheets(soaFile).Cells
+'End With
+'End Sub
