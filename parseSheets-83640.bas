@@ -7,10 +7,10 @@ Sub LoopThroughFiles()
     Dim concatFolderName As String
     
     'set upperFolder to the master folder
-    upperFolder = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\"
+    upperFolder = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\UDP_Program-DataMining_83460.00.0\"
     
     'set subFolder to the name of the directory you're looking in
-    SubFolder = "DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
+    SubFolder = "1_CLIENTFORMAT\"
     
     
     'set strFile to any filename containing "SoA"
@@ -57,10 +57,10 @@ Dim deptName As String
 soaCols = Array("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)")
 destCols = Array("SoA Ref No.", "(B)", "(C)", "Quantity of Rooms", "NOFA (m2)", "(F)", "(G)", "Remarks")
 
-dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
+'dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
+dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\UDP_Program-DataMining_83460.00.0\1_CLIENTFORMAT\"
 
 'fName = "017-20200630_PnC_LKB SoA Section 17 Dangerous Good Stores.xlsx"
-
 'fName = "009-20200630_PnC_LKB SoA Section 9 Information Counter.xlsx"
 
 'need to pass entire filepath?
@@ -131,7 +131,7 @@ Set wbFile = Workbooks(fName)
   
         
         'find the start of each column, and descend down the column to find the bottom
-        With Workbooks("2021-02-19_LKB Proposed Excel Format Headings.xlsm").Worksheets("Sheet1").Cells
+        With Workbooks("OUTPUT_2021-04-23_LKB.xlsm").Worksheets("Data").Cells
             If Not foundRange Is Nothing Then
                 If shX.Name <> "Guidelines" Then
                 Set destStart = .Range("F1048576").End(xlUp).Offset(1, 0)
@@ -150,7 +150,7 @@ Set wbFile = Workbooks(fName)
                   '      Set destStart.Offset(0, -1) = Cellular
                  '   End If
                 'Next r
-                Workbooks("2021-02-19_LKB Proposed Excel Format Headings.xlsm").Worksheets("Sheet1").Cells.UnMerge
+                .UnMerge
                 foundRange.Columns("A:B").Copy Destination:=destStart
                 foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 2)
                 .Range(destStart.Offset(0, -5), destStart.Offset(foundRange.Rows.Count, -5)).Value = fName
@@ -190,3 +190,5 @@ End Sub
 'With Worksheets(soaFile).Cells
 'End With
 'End Sub
+
+
