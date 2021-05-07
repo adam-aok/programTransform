@@ -61,7 +61,6 @@ destCols = Array("SoA Ref No.", "(B)", "(C)", "Quantity of Rooms", "NOFA (m2)", 
 dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\UDP_Program-DataMining_83460.00.0\1_CLIENTFORMAT\"
 
 'fName = "017-20200630_PnC_LKB SoA Section 17 Dangerous Good Stores.xlsx"
-'fName = "009-20200630_PnC_LKB SoA Section 9 Information Counter.xlsx"
 
 'need to pass entire filepath?
 Workbooks.Open Filename:=dirPath + fName
