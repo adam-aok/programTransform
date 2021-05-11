@@ -151,7 +151,7 @@ Set wbFile = Workbooks(fName)
                 'Next r
                 .UnMerge
                 foundRange.Columns("A:B").Copy Destination:=destStart
-                foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 2)
+                foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 4)
                 .Range(destStart.Offset(0, -5), destStart.Offset(foundRange.Rows.Count, -5)).Value = fName
                 .Range(destStart.Offset(0, -4), destStart.Offset(foundRange.Rows.Count, -4)).Value = shX.Name
                 .Range(destStart.Offset(0, -3), destStart.Offset(foundRange.Rows.Count, -3)).Value = deptName
