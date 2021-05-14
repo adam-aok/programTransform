@@ -1,5 +1,4 @@
 'Derivative of 83640, but adapted to differing format
-
 'sub to loop through files in a folder--the idea is to run the "parsefile" sub on each of these files, and output the data to the master revised sheet.
 Sub parseFile()
 
@@ -23,7 +22,6 @@ Dim soaCols() As Variant
 Dim destCols() As Variant
 Dim wsName As String
 Dim sourceRange, fillRange As Range
-Dim newOrExist As String
 Dim deptName As String
 Dim x As Integer
 
@@ -32,64 +30,53 @@ Dim containerRange As Integer
 soaCols = Array("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)")
 destCols = Array("SoA Ref No.", "(B)", "(C)", "Quantity of Rooms", "NOFA (m2)", "(F)", "(G)", "Remarks")
 
-'dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
+dirPath = "P:\86050\Design\Programming\Program Hospital\02.16.2021_Translated Program Booklet Client edits\UDP_Program-DataMining_86050.00.0\1_CLIENT-FORMAT\"
 
-fName = "02.16.21_Santiago Hospital_Space program - Translated with client edits - copy.xlsx"
+fName = "02.16.21_Santiago Hospital_Space program - Translated with client edits - Copy.xlsx"
 
+fullPath = dirPath + fName
 'need to pass entire filepath?
-'Workbooks.Open Filename:=dirPath + fName
+
+Workbooks.Open Filename:=fullPath
 'Set wbFile = Workbooks(dirPath & fName)
 
+
 Set wbFile = Workbooks(fName)
+'wbFile.Open
 'for each sheet in selected workbook
-    For Each shX In wbFile.Sheets
-        If shX.Name <> "SUMMARY" And shX.Name <> "Colors" And shX.Name <> "BASE RECEIVED" Then
-        
+For Each shX In wbFile.Sheets
+    If shX.Name <> "SUMMARY" And shX.Name <> "Colors" And shX.Name <> "BASE RECEIVED" And shX.Name <> "Med Planning Schedule" Then
         'find the start of each column, and descend down the column to find the bottom
         With shX.Cells
-        
             'shX.Cells.UnMerge
             'find start point for the top-left limits of the copy selection
-            Set startHeader = .Find("Programa Funcional - HOSPITAL SANTIAGO", LookIn:=xlValues)
-            
+        Set startHeader = .Find("Programa Funcional - HOSPITAL SANTIAGO", LookIn:=xlValues)
             'if the startPoint is found, then descend down the column to find the bottom-left value
-            If Not startHeader Is Nothing Then
-                
-            Else
-                'nothing is found
-                
-            End If
-            
-            'find the far-right column
-            Set startBottom = .Range("B1048576").End(xlUp)
-            
-            If Not startBottom Is Nothing Then
-                'MsgBox startBottom.Address
-                Set foundRange = .Range(startHeader.Offset(10, 0), startBottom.Offset(0, 6))
-                'For Each r In .Range(startHeader.Offset(10, 0), startBottom.Offset(0, 6)).Rows
-                    'If r.Cells(0, 1) <> "" Then
-                        'If foundRange Is Nothing Then
-                            'Set foundRange = r
-                        'Else
-                            'Set foundRange = Union(foundRange, r)
-                        'End If
-                    'End If
-                'Next r
-            Else
-                'nothing is found
-            End If
-            
-            'now (if the range has been found, pasting each set of rows from this sheet into the master workbook sheet
-            
-        End With
+        If Not startHeader Is Nothing Then
+        Else
+            'nothing is found
         End If
         
+            'find the far-right bottom row
+        Set startBottom = .Range("H1048576").End(xlUp)
+            
+        If Not startBottom Is Nothing Then
+            'MsgBox startBottom.Address
+        Set foundRange = .Range(startHeader.Offset(10, 0), startBottom)
+        Else
+        'nothing is found
+        End If
+            'now (if the range has been found, pasting each set of rows from this sheet into the master workbook sheet
+        End With
+    End If
+
         'now (if the range has been found, pasting each set of rows from this sheet into the master workbook sheet
         'find the start of each column, and descend down the column to find the bottom
-        With Workbooks("OUTPUT_86050.00.0_Data-Intake_AOK.xlsm").Worksheets("RawData").Cells
-            If Not foundRange Is Nothing Then
-                If shX.Name <> "Guidelines" Then
-                Set destStart = .Range("F1048576").End(xlUp).Offset(1, 0)
+    With Workbooks("OUTPUT_86050.00.0_Data-Intake_AOK.xlsm").Worksheets("RawData").Cells
+        If Not foundRange Is Nothing Then
+        If shX.Name <> "Guidelines" Then
+        Set destStart = .Range("N1048576").End(xlUp).Offset(1, 0)
+        Set destStart = destStart.Offset(0, -7)
                 'MsgBox destStart.Address
                 'get subDepartment
                 
@@ -109,10 +96,10 @@ Set wbFile = Workbooks(fName)
                 foundRange.Columns("A:I").Copy
                 destStart.PasteSpecial Paste:=xlPasteValues
                 'foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 2)
+                .Range(destStart.Offset(0, -6), destStart.Offset(foundRange.Rows.Count, -6)).Value = Date
                 .Range(destStart.Offset(0, -5), destStart.Offset(foundRange.Rows.Count, -5)).Value = fName
                 .Range(destStart.Offset(0, -4), destStart.Offset(foundRange.Rows.Count, -4)).Value = shX.Name
                 .Range(destStart.Offset(0, -3), destStart.Offset(foundRange.Rows.Count, -3)).Value = deptName
-                .Range(destStart.Offset(0, 9), destStart.Offset(foundRange.Rows.Count, 9)).Value = newOrExist
                 
                 'If
                 'destStart.FillDown
@@ -121,6 +108,7 @@ Set wbFile = Workbooks(fName)
                 '    MsgBox destStart.Address
                 '   'r.Copy Destination:=destStart
                 'Next r
+                Set foundRange = Nothing
                 
                     
                 End If
