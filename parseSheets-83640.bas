@@ -28,7 +28,6 @@ End Sub
 
 Sub parseFile(fName)
 
-
 'Sub parseFile()
 
 Dim wbFile As Workbook
@@ -42,7 +41,6 @@ Dim endPoint As Range
 Dim testR As Range
 Dim foundRange As Range
 Dim dirPath As String
-'Dim fName As String
 
 Dim columnDepth As Long
 
@@ -57,7 +55,6 @@ Dim deptName As String
 soaCols = Array("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)")
 destCols = Array("SoA Ref No.", "(B)", "(C)", "Quantity of Rooms", "NOFA (m2)", "(F)", "(G)", "Remarks")
 
-'dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\DO NOT EDIT - 2020-12-15-840 SOA received from HA DEC 20201215\"
 dirPath = "\\d-peapcny.net\enterprise\P_Projects\83460\Design\Programming\UDP_Program-DataMining_83460.00.0\1_CLIENTFORMAT\"
 
 'fName = "017-20200630_PnC_LKB SoA Section 17 Dangerous Good Stores.xlsx"
@@ -151,11 +148,11 @@ Set wbFile = Workbooks(fName)
                 'Next r
                 .UnMerge
                 foundRange.Columns("A:B").Copy Destination:=destStart
-                foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 4)
+                foundRange.Columns("F:L").Copy Destination:=destStart.Offset(0, 2)
                 .Range(destStart.Offset(0, -5), destStart.Offset(foundRange.Rows.Count, -5)).Value = fName
                 .Range(destStart.Offset(0, -4), destStart.Offset(foundRange.Rows.Count, -4)).Value = shX.Name
                 .Range(destStart.Offset(0, -3), destStart.Offset(foundRange.Rows.Count, -3)).Value = deptName
-                .Range(destStart.Offset(0, 9), destStart.Offset(foundRange.Rows.Count, 9)).Value = newOrExist
+                .Range(destStart.Offset(0, 11), destStart.Offset(foundRange.Rows.Count, 9)).Value = newOrExist
                 
                 'If
                 'destStart.FillDown
