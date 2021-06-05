@@ -116,8 +116,6 @@ For Each shX In wbFile.Sheets
         End With
     'testR = r
     'if found
-    'foundRange = shX.Range(startPoint.Offset(10, 0), endPoint.End(xlDown).Offset(0, 2))
-
     
     Next shX
     
